@@ -1,0 +1,28 @@
+import express from 'express';
+import { io } from 'socket.io-client';
+import { Chess, ChessInstance } from 'chess.js';
+import { BOTNAME, ENDPOINT } from './setup';
+import nextMove from './brains';
+
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+
+const port = process.env.PORT || 3001;
+const app = express();
+
+const socket = io(ENDPOINT);
+
+socket.on('connect', () => {
+  socket.emit('REGISTER_BOT', { customBotId: BOTNAME });
+});
+
+socket.on("YOUR_MOVE", async (boardstate: string) => {
+  const chess: ChessInstance = new Chess();
+  chess.load(boardstate);
+  const newMove = await nextMove(chess);
+  socket.emit('BOT_MOVE', {botId: BOTNAME, newMove: newMove});
+})
+
+app.listen(port, () => {
+  return console.log(`Express is listening at http://localhost:${port}`);
+});
+
