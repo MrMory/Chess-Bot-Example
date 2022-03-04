@@ -22,7 +22,7 @@ const makeRandomMove = (chess) => {
     // make a copy of the current board setup
     const game = chess;
     // look at all the possible moves
-    const possibleMoves = game.moves();
+    const possibleMoves = game.moves({ verbose: true });
     // check if the game is still going and if there are any possible moves
     if (game.game_over() || game.in_draw() || possibleMoves.length === 0)
         return; // exit if game is over

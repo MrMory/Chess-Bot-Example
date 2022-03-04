@@ -4,8 +4,14 @@ import { ChessInstance, Move, ShortMove } from "chess.js";
 
 // this will be used by the communication script to send your next move to the server
 // it is expected that you return an object of type Move or ShortMove
-const nextMove = async (chess: ChessInstance): Promise<string | Move | ShortMove> => {
+const nextMove = async (chess: ChessInstance): Promise<Move | ShortMove> => {
   // example of a way how you can 'calculate' your next move
+  const nextMove = await makeRandomMove(chess);
+  console.log('My next move: ', nextMove);
+  return nextMove;
+}
+
+export const retryMove = async (chess : ChessInstance): Promise<Move | ShortMove> => {
   const nextMove = await makeRandomMove(chess);
   console.log('My next move: ', nextMove);
   return nextMove;
